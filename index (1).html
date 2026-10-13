@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSort | AI Smart Waste Segregation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">♻</span><div><b>EcoSort</b><small>SMART WASTE SYSTEM</small></div></div>
+    <div class="nav-label">WORKSPACE</div>
+    <button class="nav active" data-target="dashboard">▦ <span>Dashboard</span></button>
+    <button class="nav" data-target="classify">◎ <span>Classify Waste</span></button>
+    <button class="nav" data-target="bins">▤ <span>Bin Monitoring</span></button>
+    <button class="nav" data-target="reports">▥ <span>Reports & Activity</span></button>
+    <button class="nav" data-target="admin">♧ <span>Admin Notifications</span></button>
+    <div class="side-bottom"><div class="online-dot"></div><div><b>System online</b><small>Demo mode · Browser storage</small></div></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><p class="eyebrow">SMART CITY / WASTE MANAGEMENT</p><h1 id="page-title">Dashboard overview</h1></div><div class="top-right"><span class="status-pill"><i></i> Demo system active</span><div class="avatar">AD</div></div></header>
+    <section id="dashboard" class="page active">
+      <div class="welcome"><div><p class="eyebrow light">ECO OPERATIONS · LIVE OVERVIEW</p><h2>Make every disposal count.</h2><p>Monitor waste categories, check bin capacity and review recent activity in one place.</p><button class="btn white" data-go="classify">＋ Classify waste</button></div><div class="welcome-art">♻</div></div>
+      <div class="stats">
+        <article class="stat-card"><div class="stat-top"><span>Total items sorted</span><span class="stat-icon purple">↗</span></div><strong id="total-items">0</strong><small class="muted">Saved in this browser</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Bins needing attention</span><span class="stat-icon orange">!</span></div><strong id="attention-count">0</strong><small class="muted">At or above 80% capacity</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Categories tracked</span><span class="stat-icon green">◈</span></div><strong>4</strong><small class="muted">Wet, dry, e-waste, hazardous</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Recent alerts</span><span class="stat-icon red">♧</span></div><strong id="alert-count">0</strong><small class="muted">Bin capacity alerts</small></article>
+      </div>
+      <div class="section-heading"><div><h3>Bin capacity</h3><p>Live values for this demo. Adjust them in Bin Monitoring.</p></div><button class="text-btn" data-go="bins">View all bins →</button></div>
+      <div class="bin-grid" id="dashboard-bins"></div>
+      <div class="section-heading"><div><h3>Recent activity</h3><p>Latest classification and monitoring events</p></div><button class="text-btn" data-go="reports">See reports →</button></div>
+      <div class="table-wrap"><table><thead><tr><th>ITEM / EVENT</th><th>CATEGORY</th><th>TIME</th><th>STATUS</th></tr></thead><tbody id="recent-table"></tbody></table></div>
+    </section>
+    <section id="classify" class="page">
+      <div class="intro"><h2>Classify waste</h2><p>Upload a waste photo or use the demo controls to record a disposal event.</p></div>
+      <div class="two-col">
+        <article class="panel">
+          <div class="panel-title"><div><h3>Waste image</h3><p>Choose a picture from your computer</p></div><span class="step-tag">STEP 01</span></div>
+          <label class="upload-zone" id="drop-zone" for="waste-image"><div id="preview-placeholder"><span class="upload-symbol">↑</span><b>Click to upload an image</b><small>PNG, JPG or WEBP · Image stays in your browser</small></div><img id="image-preview" alt="Waste preview" hidden></label>
+          <input id="waste-image" type="file" accept="image/*" hidden>
+          <p class="helper">AI recognition loads in your browser when internet is available. It identifies common objects and suggests a waste category. Always confirm the result: this is a general object model, not a waste-trained AI.</p>
+        </article>
+        <article class="panel">
+          <div class="panel-title"><div><h3>Classification result</h3><p>Confirm the correct category before recording</p></div><span class="step-tag">STEP 02</span></div>
+          <div class="result-box"><div class="result-icon" id="result-icon">?</div><div><small class="muted">SELECTED CATEGORY</small><h2 id="result-category">Not classified yet</h2><p id="result-description">Upload an image to analyse it.</p><p id="detected-object" class="detection-label" aria-live="polite"></p></div></div>
+          <div class="field"><label for="waste-name">Item name (optional)</label><input id="waste-name" placeholder="e.g. vegetable peels, bottle, old charger"></div>
+          <div class="field"><label>Choose category</label><div class="category-options">
+            <button class="category-option" data-category="Wet"><span>🥬</span>Wet</button>
+            <button class="category-option" data-category="Dry"><span>🧴</span>Dry</button>
+            <button class="category-option" data-category="E-Waste"><span>🔌</span>E-Waste</button>
+            <button class="category-option" data-category="Hazardous"><span>⚠️</span>Hazardous</button>
+          </div></div>
+          <div class="field"><label for="quantity">Items to record</label><input id="quantity" type="number" min="1" max="100" value="1"></div>
+          <button class="btn primary full" id="record-btn" disabled>Record disposal →</button>
+          <p class="helper">For safety, treat batteries, chemicals and sharp/unknown materials as hazardous and follow your local disposal rules.</p>
+        </article>
+      </div>
+    </section>
+    <section id="bins" class="page">
+      <div class="intro"><h2>Bin monitoring</h2><p>Adjust the demo fill level to test capacity monitoring and alerts.</p></div>
+      <div class="notice"><span>ⓘ</span><div><b>Demo sensor values</b><p>These levels are controlled in the browser and are not readings from physical sensors.</p></div></div>
+      <div class="bin-manage-grid" id="manage-bins"></div>
+    </section>
+    <section id="reports" class="page">
+      <div class="intro"><h2>Reports & activity</h2><p>Review recorded items and download a CSV report.</p></div>
+      <div class="report-actions"><div><b id="report-summary">0 records</b><p class="muted">Classification events stored in this browser</p></div><button class="btn primary" id="export-btn">↓ Export CSV</button><button class="btn secondary" id="clear-btn">Clear activity</button></div>
+      <div class="table-wrap"><table><thead><tr><th>ITEM / EVENT</th><th>CATEGORY</th><th>QUANTITY</th><th>TIME</th><th>STATUS</th></tr></thead><tbody id="report-table"></tbody></table></div>
+    </section>
+    <section id="admin" class="page">
+      <div class="intro"><h2>Admin notifications</h2><p>Alerts are created when a demo bin reaches 100% capacity.</p></div>
+      <div class="notice"><span>ⓘ</span><div><b>Prototype notification mode</b><p>In-app alerts are saved in this browser. Enable browser notifications to see a desktop alert while this app is open. Remote email/SMS/WhatsApp delivery requires a backend service and is not connected in this ZIP.</p></div></div>
+      <article class="panel notification-settings">
+        <div><h3>Desktop notifications</h3><p id="notification-permission" class="muted">Browser notification permission has not been checked.</p></div>
+        <button class="btn primary" id="enable-notifications">Enable browser notifications</button>
+      </article>
+      <div class="section-heading"><div><h3>Bin-full alert history</h3><p>New alerts appear here when a bin first reaches 100%.</p></div><div class="admin-actions"><button class="btn secondary" id="clear-alerts">Clear alert history</button><button class="btn secondary" id="reset-demo">Reset all demo data</button></div></div>
+      <div id="admin-alert-list" class="admin-alert-list"></div>
+    </section>
+    <footer>EcoSort · AI Smart Waste Segregation System <span>Project prototype · Not connected to physical sensors</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"></script>
+  <script src="app.js"></script>
+</body>
+</html>
